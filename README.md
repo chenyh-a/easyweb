@@ -1,5 +1,5 @@
 # easyweb
-A very simple java framework contains data import/export.  Source code usage:
+A simple java framework contains data import/export routine with high performance.  Source code usage:
 - Use Git download(clone) source code,
   - git clone https://github.com/chenyh-a/easyweb
 - Initiate example data in your database(Mysql or MariaDB)
