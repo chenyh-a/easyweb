@@ -1,5 +1,8 @@
 package com.example.easyweb.dao;
 
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -39,9 +42,10 @@ public class QueryDao extends BaseDao<QueryRequest, QueryResponse> {
 
 		QueryRequest req = (QueryRequest) req0;
 		QueryResponse rsp = req.copy();
-
+		CallableStatement stmt = null;
+		ResultSet rs = null;
 		try {
-			init(req.method);
+			stmt = getStatement(req.method);
 			int totalPos = 0;
 			for (ProcedureColumn pc : spCols) {
 				String spParamName = pc.COLUMN_NAME;// SP parameter name with prefix p_
@@ -81,7 +85,8 @@ public class QueryDao extends BaseDao<QueryRequest, QueryResponse> {
 			rsp.error = e.getMessage();
 			log.error(e.getMessage(), e);
 		} finally {
-			close();
+			close(rs);
+			close(stmt);
 		}
 		return rsp;
 	}

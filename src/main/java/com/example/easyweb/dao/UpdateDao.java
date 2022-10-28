@@ -1,5 +1,6 @@
 package com.example.easyweb.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Types;
 
 import org.slf4j.Logger;
@@ -35,9 +36,9 @@ public class UpdateDao extends BaseDao<UpdateRequest, UpdateResponse> {
 			rsp.message = s;
 			return rsp;
 		}
-
+		CallableStatement stmt = null;
 		try {
-			init(req.method);
+			stmt = getStatement(req.method);
 			for (VO vo : req.data) {
 				for (ProcedureColumn pc : spCols) {
 					String spParamName = pc.COLUMN_NAME;// SP parameter name, should start with prefix p_
@@ -66,13 +67,14 @@ public class UpdateDao extends BaseDao<UpdateRequest, UpdateResponse> {
 					rsp.result = C.RESULT_FAIL;
 					rsp.message = e.getMessage();
 					log.error("Error occured. request row data: " + vo, e);
+					close(stmt);
 					throw e;
 				}
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		} finally {
-			close();
+			close(stmt);
 		}
 		return rsp;
 	}

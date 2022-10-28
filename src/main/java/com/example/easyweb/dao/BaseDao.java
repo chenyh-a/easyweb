@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,23 +30,20 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 	@Autowired
 	DataSource dataSource;
 
-	protected Connection conn;
-	protected CallableStatement stmt;
 	protected List<ProcedureColumn> spCols;
-	protected ResultSet rs;
 
 	private static Logger log = LoggerFactory.getLogger(BaseDao.class);
 
 	public abstract E execute(T req);
 
-	protected void init(String method) throws Exception {
+	protected CallableStatement getStatement(String method) throws Exception {
 		if (method == null) {
 			throw new Exception("Error: Method missing.");// define your own exception here.
 		}
 		// Context ctx = new InitialContext();
 		// DataSource dataSource = (DataSource) ctx.lookup(JNDI_NAME);
 
-		conn = dataSource.getConnection();// use spring data source
+		Connection conn = dataSource.getConnection();// use spring data source
 		spCols = getSpParams(conn, method);
 		String sql = "{call " + method + "(";
 
@@ -57,10 +55,10 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 		}
 		sql += ")}";
 
-		stmt = conn.prepareCall(sql);
+		CallableStatement stmt = conn.prepareCall(sql);
 
 		log.debug(sql);
-
+		return stmt;
 	}
 
 	/**
@@ -94,17 +92,26 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 		return list;
 	}
 
-	protected void close() {
+	protected void close(ResultSet rs) {
 		try {
-			if (rs != null && !rs.isClosed())
+			if (rs != null && !rs.isClosed()) {
 				rs.close();
-			if (stmt != null && !stmt.isClosed())
-				stmt.close();
-			if (conn != null && !conn.isClosed()) {
-				//conn.close();
 			}
+
 		} catch (Exception e) {
 		}
 	}
 
+	protected void close(Statement stmt) {
+		try {
+
+			if (stmt != null && !stmt.isClosed()) {
+				stmt.close();
+				if (stmt.getConnection().isClosed()) {
+					stmt.getConnection().close();
+				}
+			}
+		} catch (Exception e) {
+		}
+	}
 }

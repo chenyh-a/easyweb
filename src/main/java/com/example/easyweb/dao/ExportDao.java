@@ -1,5 +1,8 @@
 package com.example.easyweb.dao;
 
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -26,9 +29,10 @@ public class ExportDao extends BaseDao<ExportRequest, ExportResponse> {
 
 		ExportRequest req = (ExportRequest) req0;
 		ExportResponse rsp = req.copy();
-		
+		CallableStatement stmt = null;
+		ResultSet rs = null;
 		try {
-			init(req.method);
+			stmt = getStatement(req.method);
 			for (ProcedureColumn pc : spCols) {
 				String spParamName = pc.COLUMN_NAME;// SP parameter name with prefix p_
 
@@ -48,7 +52,8 @@ public class ExportDao extends BaseDao<ExportRequest, ExportResponse> {
 			rsp.message = e.getMessage();
 			log.error(e.getMessage(), e);
 		} finally {
-			close();
+			close(rs);
+			close(stmt);
 		}
 		return rsp;
 	}

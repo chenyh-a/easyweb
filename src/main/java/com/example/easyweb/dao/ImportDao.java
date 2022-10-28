@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -59,8 +61,10 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 
 		ImportRequest req = (ImportRequest) req0;
 		ImportResponse rsp = req.copy();
+		CallableStatement stmt = null;
+		// ResultSet rs = null;
 		try {
-			init(req.method);
+			stmt = getStatement(req.method);
 			Workbook wb = new XSSFWorkbook(new File(req.fullPath));
 			Sheet sheet1 = wb.getSheetAt(0);
 			Row row = sheet1.getRow(0);
@@ -76,7 +80,7 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 				}
 			}
 			int n = 0;
-			conn.setAutoCommit(false);// Important!
+			stmt.getConnection().setAutoCommit(false);// Important!
 			for (int i = 1; i <= sheet1.getLastRowNum() + 1; i++) {
 				row = sheet1.getRow(i);
 				if (row == null) {
@@ -105,16 +109,16 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 				if (i % 1000 == 0) {
 					stmt.executeBatch();
 					stmt.clearBatch();
-					conn.commit();
+					stmt.getConnection().commit();
 					n = 0;
 				}
 			}
 			if (n > 0) {
 				stmt.executeBatch();
-				conn.commit();
+				stmt.getConnection().commit();
 			}
 			wb.close();
-			conn.setAutoCommit(true);
+			stmt.getConnection().setAutoCommit(true);
 			executeImportVerify(req, rsp);
 		} catch (Exception e) {
 			rsp.result = C.RESULT_FAIL;
@@ -150,9 +154,10 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 	}
 
 	private void executeImportVerify(ImportRequest req, ImportResponse rsp) throws Exception {
-
+		CallableStatement stmt = null;
+		ResultSet rs = null;
 		try {
-			stmt = conn.prepareCall("{call " + req.verifyMethod + "(?,?)}");// fixed SP name with suffix _verify
+			stmt = getStatement(req.verifyMethod);
 			stmt.setObject(1, req.token);// fixed parameter
 			stmt.setObject(2, req.userCode);// fixed parameter
 			stmt.executeQuery();
@@ -205,7 +210,8 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 			log.error(e.getMessage(), e);
 			throw e;
 		} finally {
-			close();
+			close(rs);
+			close(stmt);
 		}
 	}
 }
