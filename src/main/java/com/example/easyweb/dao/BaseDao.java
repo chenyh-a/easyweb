@@ -22,8 +22,8 @@ import com.example.easyweb.vo.ProcedureColumn;
  *
  */
 public abstract class BaseDao<T, E> implements IDao<T, E> {
-	
-	//static final String JNDI_NAME = "java:comp/env/jdbc/mariaDB";
+
+	// static final String JNDI_NAME = "java:comp/env/jdbc/mariaDB";
 	static final String PARAM_TOKEN = "p_token";
 
 	@Autowired
@@ -100,8 +100,9 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 				rs.close();
 			if (stmt != null && !stmt.isClosed())
 				stmt.close();
-			if (conn != null && !conn.isClosed())
-				conn.close();
+			if (conn != null && !conn.isClosed()) {
+				//conn.close();
+			}
 		} catch (Exception e) {
 		}
 	}
