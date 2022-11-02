@@ -10,8 +10,8 @@ public class ExportRequest extends BaseRequest {
 
 	public String filename;// export file name without suffix
 	public String currRootDir;// current absolute dir. simpleweb/
-	public boolean autoSizeColumn;//
-	public boolean watermark;//
+	public Boolean autoSizeColumn;//
+	public Boolean watermark;//
 	public VOS cols;// table column name and caption, required when import/export.
 
 	public VO data = new VO();

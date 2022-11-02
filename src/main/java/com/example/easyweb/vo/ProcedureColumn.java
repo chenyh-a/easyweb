@@ -11,7 +11,7 @@ public class ProcedureColumn {
 	public String PROCEDURE_SCHEM;
 	public String PROCEDURE_NAME;
 	public String COLUMN_NAME; // SP parameter name should start with prefix p_
-	public short COLUMN_TYPE; // 0~5
+	public Short COLUMN_TYPE; // 0~5
 	/**
 	 * procedureColumnUnknown - <br/>
 	 * procedureColumnIn - IN <br/>
@@ -21,13 +21,13 @@ public class ProcedureColumn {
 	 * procedureColumnResult - ResultSet
 	 */
 
-	public int DATA_TYPE;// java.sql.Types
+	public Integer DATA_TYPE;// java.sql.Types
 	public String TYPE_NAME;
-	public int PRECISION;
-	public int LENGTH;
-	public short SCALE;
-	public short RADIX;
-	public short NULLABLE;// 0~2
+	public Integer PRECISION;
+	public Integer LENGTH;
+	public Short SCALE;
+	public Short RADIX;
+	public Short NULLABLE;// 0~2
 	/**
 	 * procedureNoNulls <br/>
 	 * procedureNullable <br/>
@@ -35,7 +35,7 @@ public class ProcedureColumn {
 	 */
 
 	public String REMARKS;//
-	public int pos;// SP parameter position
+	public Integer pos;// SP parameter position
 	public String excelHeader;// use it when import
-	public int excelIndex;// use it when import
+	public Integer excelIndex;// use it when import
 }

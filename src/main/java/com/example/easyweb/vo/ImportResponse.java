@@ -10,7 +10,7 @@ public class ImportResponse extends BaseResponse {
 
 	public String fileUrl;// import error file.
 	public String sourceFile;// return when import
-	public int totalNum; // return when import
-	public int successNum;// return when import
-	public int errorNum;// return when import
+	public Integer totalNum; // return when import
+	public Integer successNum;// return when import
+	public Integer errorNum;// return when import
 }

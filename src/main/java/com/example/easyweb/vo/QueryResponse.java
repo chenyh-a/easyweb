@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class QueryResponse extends BaseResponse {
 
-	public int draw;// jquery datatable passed
-	public int start; // jquery datatable passed
-	public int length; // jquery datatable passed
-	public int recordsTotal; // return to jquery datatable
-	public int recordsFiltered;// return to jquery datatable
+	public Integer draw;// jquery datatable passed
+	public Integer start; // jquery datatable passed
+	public Integer length; // jquery datatable passed
+	public Integer recordsTotal; // return to jquery datatable
+	public Integer recordsFiltered;// return to jquery datatable
 	public String error;
 	public List<VO> data;// return actual query data
 }

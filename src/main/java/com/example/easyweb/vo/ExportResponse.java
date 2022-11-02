@@ -9,6 +9,6 @@ package com.example.easyweb.vo;
 public class ExportResponse extends BaseResponse {
 
 	public String fileUrl;// actual export file name for download, also the import error file.
-	public int totalNum; // return when import
-	public int successNum;// return when import
+	public Integer totalNum; // return when import
+	public Integer successNum;// return when import
 }

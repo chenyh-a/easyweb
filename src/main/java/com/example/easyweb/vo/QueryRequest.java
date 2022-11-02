@@ -8,9 +8,9 @@ package com.example.easyweb.vo;
  */
 public class QueryRequest extends BaseRequest {
 
-	public int draw = 1;// required when query, get it from request
-	public int start; // default 0, required when query
-	public int length = 10; // page size, required when query
+	public Integer draw = 1;// required when query, get it from request
+	public Integer start; // default 0, required when query
+	public Integer length = 10; // page size, required when query
 	public String orderColumn;// order DB column
 	public String orderDir;// order direction: ASC/DESC
 	public VO data = new VO();// search criteria
