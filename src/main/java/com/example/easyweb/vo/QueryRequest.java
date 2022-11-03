@@ -2,6 +2,7 @@ package com.example.easyweb.vo;
 
 /**
  * User request parameters passed from front end.
+ * params passed from front end will use a JQuery dataTables JS component
  * 
  * @author chenyh
  *
