@@ -4,5 +4,5 @@ public class UploadResponse extends BaseResponse {
 
 	public String originalFilename;
 	public Long fileSize;
-	public String destFilePath;
+	public String destFilePath;// destination file path
 }

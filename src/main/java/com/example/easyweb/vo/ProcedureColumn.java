@@ -36,6 +36,6 @@ public class ProcedureColumn {
 
 	public String REMARKS;//
 	public Integer pos;// SP parameter position
-	public String excelHeader;// use it when import
-	public Integer excelIndex;// use it when import
+	public String excelHeader;// mapping excel header name, use it when import
+	public Integer excelIndex;// mapping excel header index, use it when import
 }

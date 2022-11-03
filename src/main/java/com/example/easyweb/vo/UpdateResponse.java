@@ -8,6 +8,6 @@ package com.example.easyweb.vo;
  */
 public class UpdateResponse extends BaseResponse {
 
-	public Integer affected; // return affected rows count when update/insert/delete
+	public Integer affected; // Affected rows count when update/insert/delete
 
 }

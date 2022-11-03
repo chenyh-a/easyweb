@@ -8,9 +8,9 @@ package com.example.easyweb.vo;
  */
 public class ImportResponse extends BaseResponse {
 
-	public String fileUrl;// import error file.
-	public String sourceFile;// return when import
-	public Integer totalNum; // return when import
-	public Integer successNum;// return when import
-	public Integer errorNum;// return when import
+	public String fileUrl;// importing error file URL.
+	public String sourceFile;// source file name
+	public Integer totalNum; // total rows of excel file
+	public Integer successNum;// total rows imported successfully
+	public Integer errorNum;// total error rows
 }

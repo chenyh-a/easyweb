@@ -11,6 +11,6 @@ public class BaseResponse {
 	public String tag;// extra info passed from front end
 	public String result;// business result code SUCCESS/FAIL
 	public String message;
-	public Long consumed;// consumed milliseconds
+	public Long consumed;// consumed time in milliseconds
 
 }
