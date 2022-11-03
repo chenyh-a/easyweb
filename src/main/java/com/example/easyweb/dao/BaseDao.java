@@ -107,7 +107,7 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 
 			if (stmt != null && !stmt.isClosed()) {
 				stmt.close();
-				if (stmt.getConnection().isClosed()) {
+				if (!stmt.getConnection().isClosed()) {
 					stmt.getConnection().close();
 				}
 			}
