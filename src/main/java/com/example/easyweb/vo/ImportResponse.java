@@ -10,7 +10,7 @@ public class ImportResponse extends BaseResponse {
 
 	public String fileUrl;// importing error file URL.
 	public String sourceFile;// source file name
-	public Integer totalNum; // total rows of excel file
-	public Integer successNum;// total rows imported successfully
-	public Integer errorNum;// total error rows
+	public Integer totalNum = 0; // total rows of excel file
+	public Integer successNum = 0;// total rows imported successfully
+	public Integer errorNum = 0;// total error rows
 }

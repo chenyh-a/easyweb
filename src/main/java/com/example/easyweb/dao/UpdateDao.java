@@ -37,6 +37,7 @@ public class UpdateDao extends BaseDao<UpdateRequest, UpdateResponse> {
 			return rsp;
 		}
 		CallableStatement stmt = null;
+	
 		try {
 			stmt = getStatement(req.method);
 			for (VO vo : req.data) {
