@@ -23,6 +23,10 @@ import com.example.easyweb.WatermarkImage.Watermark;
 import com.example.easyweb.vo.ExportRequest;
 import com.example.easyweb.vo.ExportResponse;
 
+/**
+ * @author chenyh-a
+ * @version created 2022-10-17
+ */
 public class ExcelUtil {
 
 	private static Logger log = LoggerFactory.getLogger(ExcelUtil.class);
@@ -30,42 +34,24 @@ public class ExcelUtil {
 	public static void export(ResultSet rs, ExportRequest req, ExportResponse rsp) throws Exception {
 
 		int n = 0;
-		Date date = new Date();
-		String today = new SimpleDateFormat("yyyyMMdd").format(date);
-		String sdir = "export/" + today;
-		File fulldir = new File(req.currRootDir + sdir);
-		if (!fulldir.exists()) {
-			fulldir.mkdirs();
-		}
-		String fname = req.filename;
-		if (fname == null || "".equals(fname)) {
-			fname = "export";
-		} else {
-			fname = fname.trim().replaceAll(" ", "");
-			fname = fname.replaceAll("/", "");
-		}
-		fname += "-" + req.userCode + "-" + new SimpleDateFormat("yyyyMMdd-HHmmss-S").format(date) + ".xlsx";
-
+		File file = getDestFile(req, rsp);
 		if (rs != null) {
-			File file = new File(fulldir, fname);
+
 			XSSFWorkbook wb = new XSSFWorkbook();
 			XSSFSheet sheet1 = wb.createSheet("My Sheet 1");
 			XSSFRow row0 = sheet1.createRow(n);
 
-			XSSFFont font0 = wb.createFont();
-			font0.setFontName("Arial");
-			font0.setFontHeightInPoints((short) 11);// 设置字体大小
+			XSSFFont font0 = createFont(wb, "Arial", 11);
 
 			XSSFCellStyle style0 = wb.createCellStyle();
-			style0.setFont(font0);// 选择需要用到的字体格式
-			style0.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // 设置背景色
+			style0.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 			style0.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			style0.setFont(font0);
 
-			XSSFFont font1 = wb.createFont();
-			font1.setFontName("Arial");
-			font1.setFontHeightInPoints((short) 10);// 设置字体大小
+			XSSFFont font1 = createFont(wb, "Arial", 10);
+
 			XSSFCellStyle style1 = wb.createCellStyle();
-			style1.setFont(font1);// 选择需要用到的字体格式
+			style1.setFont(font1);
 
 			int i = 0;
 			for (String key : req.cols.keySet()) {
@@ -98,29 +84,60 @@ public class ExcelUtil {
 				}
 			}
 			if (req.watermark) {
-				Watermark w = new Watermark();
-				w.text = req.userCode;// Watermark text
-				w.writeDate = true;
-				w.dateFormat = "yyyy-MM-dd HH:mm";
-				w.color = "#d3d7d4";
-				w.font = new Font("Arial", Font.PLAIN | Font.BOLD, 30);
-
-				w.width = 400;
-				w.height = 200;
-				WatermarkImage.write(wb, w);
+				drawWatermark(wb, req.userCode);
 			}
 			try (OutputStream fileOut = new FileOutputStream(file)) {
 				wb.write(fileOut);
 			}
 			wb.close();
 
-			rsp.fileUrl = sdir + "/" + fname;
 			log.debug("Exported file path:" + file.getAbsolutePath());
 		}
 		rsp.totalNum = n;
 		rsp.successNum = n;
-		rsp.result = C.RESULT_SUCCESS;
-
+		rsp.result = Contants.RESULT_SUCCESS;
 	}
 
+	private static File getDestFile(ExportRequest req, ExportResponse rsp) {
+		Date date = new Date();
+		String today = new SimpleDateFormat("yyyyMMdd").format(date);
+		String sdir = "export/" + today;
+		File fulldir = new File(req.currRootDir + sdir);
+		if (!fulldir.exists()) {
+			fulldir.mkdirs();
+		}
+
+		String fname = req.filename;
+		if (fname == null || "".equals(fname)) {
+			fname = "export";
+		} else {
+			fname = fname.trim().replaceAll(" ", "");
+			fname = fname.replaceAll("/", "");
+		}
+		fname += "-" + req.userCode + "-" + new SimpleDateFormat("yyyyMMdd-HHmmss-S").format(date) + ".xlsx";
+		rsp.fileUrl = sdir + "/" + fname;
+		File file = new File(fulldir, fname);
+		return file;
+	}
+
+	private static XSSFFont createFont(XSSFWorkbook wb, String fontName, int fontSize) {
+		XSSFFont font = wb.createFont();
+		font.setFontName(fontName);
+		font.setFontHeightInPoints((short) fontSize);
+		return font;
+	}
+
+	private static void drawWatermark(XSSFWorkbook wb, String watermarkText) throws Exception {
+		Watermark w = new Watermark();
+		/* use user code as watermark text */
+		w.text = watermarkText;
+		w.writeDate = true;
+		w.dateFormat = "yyyy-MM-dd HH:mm";
+		w.color = "#d3d7d4";
+		w.font = new Font("Arial", Font.PLAIN | Font.BOLD, 30);
+
+		w.width = 400;
+		w.height = 200;
+		WatermarkImage.write(wb, w);
+	}
 }

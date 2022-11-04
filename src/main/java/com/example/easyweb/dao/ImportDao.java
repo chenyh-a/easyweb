@@ -24,13 +24,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.example.easyweb.C;
-import com.example.easyweb.U;
+import com.example.easyweb.Contants;
+import com.example.easyweb.Util;
 import com.example.easyweb.vo.ImportRequest;
 import com.example.easyweb.vo.ImportResponse;
 import com.example.easyweb.vo.ProcedureColumn;
-import com.example.easyweb.vo.VO;
-import com.example.easyweb.vo.VOS;
+import com.example.easyweb.vo.Vo;
+import com.example.easyweb.vo.Vs;
 
 /**
  * DB utilities
@@ -71,16 +71,17 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 
 			initExcelIndex(req.cols, row);
 			for (ProcedureColumn pc : spCols) {
-				String dbColName = pc.COLUMN_NAME.substring(2);
+				String dbColName = pc.columnName.substring(2);
 				if (!req.cols.containsKey(dbColName) && (!"token".equals(dbColName)) && (!"rownum".equals(dbColName))) {
 					String ss = "Error: SP parameter not defined in front end,SP=" + req.method + ",dbColName= "
-							+ pc.COLUMN_NAME;
+							+ pc.columnName;
 					log.error(ss);
 					throw new Exception(ss);
 				}
 			}
 			int n = 0;
-			stmt.getConnection().setAutoCommit(false);// Important!
+			// Important!
+			stmt.getConnection().setAutoCommit(false);
 			for (int i = 1; i <= sheet1.getLastRowNum() + 1; i++) {
 				row = sheet1.getRow(i);
 				if (row == null) {
@@ -92,7 +93,7 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 
 					Cell cell = row.getCell(pc.excelIndex);
 					CellType tp = cell.getCellType();
-					String key = pc.COLUMN_NAME;
+					String key = pc.columnName;
 					if (key.equals(PARAM_TOKEN)) {
 						val = req.token;
 					} else if (key.equals(PARAM_ROWNUM)) {
@@ -121,17 +122,17 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 			stmt.getConnection().setAutoCommit(true);
 			executeImportVerify(req, rsp);
 		} catch (Exception e) {
-			rsp.result = C.RESULT_FAIL;
+			rsp.result = Contants.RESULT_FAIL;
 			rsp.message = e.getMessage();
 			log.error(e.getMessage(), e);
 		}
 		return rsp;
 	}
 
-	private void initExcelIndex(VOS cols, Row row) throws Exception {
+	private void initExcelIndex(Vs cols, Row row) throws Exception {
 
 		for (ProcedureColumn pc : spCols) {
-			String key = pc.COLUMN_NAME;
+			String key = pc.columnName;
 			if (PARAM_TOKEN.equals(key) || PARAM_ROWNUM.equals(key)) {
 				continue;
 			}
@@ -158,12 +159,13 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 		ResultSet rs = null;
 		try {
 			stmt = getStatement(req.verifyMethod);
-			stmt.setObject(1, req.token);// fixed parameter
-			stmt.setObject(2, req.userCode);// fixed parameter
+			// fixed parameter
+			stmt.setObject(1, req.token);
+			stmt.setObject(2, req.userCode);
 			stmt.executeQuery();
 
 			rs = stmt.getResultSet();
-			List<VO> list = U.getDataFromResultSet(rs);
+			List<Vo> list = Util.getDataFromResultSet(rs);
 
 			FileInputStream fis = new FileInputStream(req.fullPath);
 			XSSFWorkbook wb = new XSSFWorkbook(fis);
@@ -183,12 +185,13 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 
 			if (rs != null && list.size() > 0) {
 				int ncol = row0.getLastCellNum();
-				for (VO vo : list) {
+				for (Vo vo : list) {
 					int rownum = Integer.valueOf(vo.get("rownum").toString());
 					Row row = sheet1.getRow(rownum);
 					Cell cell = row.createCell(ncol);
 					cell.setCellValue(vo.get("error_message").toString());
-					for (int i = 0; i < ncol + 1; i++) {// need set every cell instead of setRowStyle
+					// need set every cell instead of setRowStyle
+					for (int i = 0; i < ncol + 1; i++) {
 						row.getCell(i).setCellStyle(style);
 					}
 				}
@@ -203,9 +206,9 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 			}
 			fis.close();
 			wb.close();
-			rsp.result = C.RESULT_SUCCESS;
+			rsp.result = Contants.RESULT_SUCCESS;
 		} catch (Exception e) {
-			rsp.result = C.RESULT_FAIL;
+			rsp.result = Contants.RESULT_FAIL;
 			rsp.message = e.getMessage();
 			log.error(e.getMessage(), e);
 			throw e;

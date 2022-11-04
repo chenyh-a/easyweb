@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.easyweb.C;
+import com.example.easyweb.Contants;
 import com.example.easyweb.dao.ExportDao;
 import com.example.easyweb.vo.ExportRequest;
 import com.example.easyweb.vo.ExportResponse;
@@ -37,7 +37,7 @@ public class ExportController {
 		ExportResponse rsp = new ExportResponse();
 		String str = "";
 		try {
-			if (!C.RESULT_FAIL.equals(rsp.result)) {
+			if (!Contants.RESULT_FAIL.equals(rsp.result)) {
 				rsp = req.copy();
 				req.currRootDir = servletContext.getRealPath("/");
 				rsp = exportDao.execute(req);
@@ -48,7 +48,7 @@ public class ExportController {
 				log.debug(str);
 			}
 		} catch (Exception e) {
-			rsp.result = C.RESULT_FAIL;
+			rsp.result = Contants.RESULT_FAIL;
 			log.error(e.getMessage(), e);
 		}
 		try {

@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.easyweb.U;
+import com.example.easyweb.Util;
 import com.example.easyweb.dao.ImportDao;
 import com.example.easyweb.vo.ImportRequest;
 import com.example.easyweb.vo.ImportResponse;
-import com.example.easyweb.vo.VOS;
+import com.example.easyweb.vo.Vs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * @author chenyh-a
+ * @version created 2022-10-17
+ */
 @RestController
 public class ImportController {
 	private static Logger log = LoggerFactory.getLogger(ImportController.class);
@@ -46,15 +50,16 @@ public class ImportController {
 		req.verifyMethod = verifyMethod;
 		req.token = token;
 		req.tag = tag;
-		req.cols = mapper.readValue(cols, VOS.class);
+		req.cols = mapper.readValue(cols, Vs.class);
 		req.userCode = userCode;
-		req.roleCode = roleCode; // optional
+		// optional
+		req.roleCode = roleCode; 
 
 		ImportResponse rsp = req.copy();
 
 		String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
 		String currDir = request.getServletContext().getRealPath("/");
-		String fileUrl = "upload/" + today + "/" + U.getTempFileName(f1.getOriginalFilename());
+		String fileUrl = "upload/" + today + "/" + Util.getTempFileName(f1.getOriginalFilename());
 		String destFilePath = currDir + fileUrl;
 		log.debug("upload original file=" + f1.getOriginalFilename());
 		log.debug("upload destFilePath=" + destFilePath);

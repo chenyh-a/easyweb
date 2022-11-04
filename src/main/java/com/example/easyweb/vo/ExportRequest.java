@@ -7,15 +7,20 @@ package com.example.easyweb.vo;
  *
  */
 public class ExportRequest extends BaseRequest {
+	/** export file name without suffix */
+	public String filename;
+	/** current absolute directory easyweb/ */
+	public String currRootDir;
+	/** need auto sizing excel column width */
+	public Boolean autoSizeColumn;
+	/** print user code as water mark */
+	public Boolean watermark;
+	/** table column name and caption, required when import/export. */
+	public Vs cols;
+	/** extra info, usually searching criteria */
+	public Vo data = new Vo();
 
-	public String filename;// export file name without suffix
-	public String currRootDir;// current absolute directory easyweb/
-	public Boolean autoSizeColumn;// need auto sizing excel column width
-	public Boolean watermark;// print user code as water mark
-	public VOS cols;// table column name and caption, required when import/export.
-
-	public VO data = new VO();//extra info, usually searching criteria
-
+	@Override
 	public ExportResponse copy() {
 		ExportResponse rsp = new ExportResponse();
 		super.baseCopy(rsp);

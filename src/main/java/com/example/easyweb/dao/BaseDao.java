@@ -24,7 +24,8 @@ import com.example.easyweb.vo.ProcedureColumn;
  */
 public abstract class BaseDao<T, E> implements IDao<T, E> {
 
-	// static final String JNDI_NAME = "java:comp/env/jdbc/mariaDB";
+	/* static final String JNDI_NAME = "java:comp/env/jdbc/mariaDB";*/
+	
 	static final String PARAM_TOKEN = "p_token";
 
 	@Autowired
@@ -34,16 +35,16 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 
 	private static Logger log = LoggerFactory.getLogger(BaseDao.class);
 
-	public abstract E execute(T req);
-
 	protected CallableStatement getStatement(String method) throws Exception {
 		if (method == null) {
-			throw new Exception("Error: Method missing.");// define your own exception here.
+			// define your own exception here.
+			throw new Exception("Error: Method missing.");
 		}
 		// Context ctx = new InitialContext();
 		// DataSource dataSource = (DataSource) ctx.lookup(JNDI_NAME);
 
-		Connection conn = dataSource.getConnection();// use spring data source
+		// use spring data source
+		Connection conn = dataSource.getConnection();
 		spCols = getSpParams(conn, method);
 		String sql = "{call " + method + "(";
 
@@ -78,9 +79,9 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 			pos++;
 			ProcedureColumn pc = new ProcedureColumn();
 			String colName = rs0.getString("COLUMN_NAME");
-			pc.COLUMN_NAME = colName;
-			pc.COLUMN_TYPE = rs0.getShort("COLUMN_TYPE");
-			pc.DATA_TYPE = rs0.getInt("DATA_TYPE");
+			pc.columnName = colName;
+			pc.columnType = rs0.getShort("COLUMN_TYPE");
+			pc.dataType = rs0.getInt("DATA_TYPE");
 			if (!colName.startsWith("p_")) {
 				String ss = "Error: SP parameter not start with prefix p_: " + colName;
 				log.error(ss);

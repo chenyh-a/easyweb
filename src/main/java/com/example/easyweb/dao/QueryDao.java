@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.example.easyweb.C;
-import com.example.easyweb.U;
+import com.example.easyweb.Contants;
+import com.example.easyweb.Util;
 import com.example.easyweb.vo.ProcedureColumn;
 import com.example.easyweb.vo.QueryRequest;
 import com.example.easyweb.vo.QueryResponse;
@@ -27,13 +27,18 @@ import com.example.easyweb.vo.QueryResponse;
  */
 @Component
 public class QueryDao extends BaseDao<QueryRequest, QueryResponse> {
-
-	static final String PARAM_GET_OFFSET = "p_get_offset"; // skip record
-	static final String PARAM_GET_NUM = "p_get_num";// page size
-	static final String PARAM_ORDER_COLUMN = "p_order_column";// order by column
-	static final String PARAM_ORDER_DIR = "p_order_dir";// DESC / ASC
-	static final String PARAM_TOTAL_RECORDS = "p_total_records";// Should define this output parameter in you list SP
-	static final String PARAM_USER_CODE = "p_usercode";// login user code
+	/** skip record */
+	static final String PARAM_GET_OFFSET = "p_get_offset";
+	/** page size */
+	static final String PARAM_GET_NUM = "p_get_num";
+	/** order by column */
+	static final String PARAM_ORDER_COLUMN = "p_order_column";
+	/** DESC / ASC */
+	static final String PARAM_ORDER_DIR = "p_order_dir";
+	/** Should define this output parameter in you list SP */
+	static final String PARAM_TOTAL_RECORDS = "p_total_records";
+	/** login user code */
+	static final String PARAM_USER_CODE = "p_usercode";
 
 	private static Logger log = LoggerFactory.getLogger(QueryDao.class);
 
@@ -48,28 +53,32 @@ public class QueryDao extends BaseDao<QueryRequest, QueryResponse> {
 			stmt = getStatement(req.method);
 			int totalPos = 0;
 			for (ProcedureColumn pc : spCols) {
-				String spParamName = pc.COLUMN_NAME;// SP parameter name with prefix p_
+				// SP parameter name with prefix p_
+				String spParamName = pc.columnName;
 				Object val = null;
-				String dbColName = spParamName.substring(2);// remove prefix p_ as DB column name
-				if (spParamName.equals(PARAM_GET_NUM)) {
+				// remove prefix p_ as DB column name
+				String dbColName = spParamName.substring(2);
+				if (PARAM_GET_NUM.equals(spParamName)) {
 					val = req.length;
-				} else if (spParamName.equals(PARAM_GET_OFFSET)) {
+				} else if (PARAM_GET_OFFSET.equals(spParamName)) {
 					val = req.start;
-				} else if (spParamName.equals(PARAM_ORDER_COLUMN)) {
+				} else if (PARAM_ORDER_COLUMN.equals(spParamName)) {
 					val = req.orderColumn;
-				} else if (spParamName.equals(PARAM_ORDER_DIR)) {
+				} else if (PARAM_ORDER_DIR.equals(spParamName)) {
 					val = req.orderDir;
-				} else if (spParamName.equals(PARAM_USER_CODE)) {
+				} else if (PARAM_USER_CODE.equals(spParamName)) {
 					val = req.userCode;
 				} else {
 					val = req.data.get(dbColName);
 				}
-				if (pc.COLUMN_TYPE == 1 || pc.COLUMN_TYPE == 2) {// 1 In 2 InOut 3 Out 4 Return
+				// 1 In 2 InOut 3 Out 4 Return
+				if (pc.columnType == 1 || pc.columnType == 2) {
 					stmt.setObject(pc.pos, val);
 				}
-				if (pc.COLUMN_TYPE == 2 || pc.COLUMN_TYPE == 3 || pc.COLUMN_TYPE == 4) {// register out parameter
-					stmt.registerOutParameter(pc.pos, pc.DATA_TYPE);
-					if (spParamName.equals(PARAM_TOTAL_RECORDS)) {
+				// register out parameter
+				if (pc.columnType == 2 || pc.columnType == 3 || pc.columnType == 4) {
+					stmt.registerOutParameter(pc.pos, pc.dataType);
+					if (PARAM_TOTAL_RECORDS.equals(spParamName)) {
 						totalPos = pc.pos;
 					}
 				}
@@ -78,10 +87,10 @@ public class QueryDao extends BaseDao<QueryRequest, QueryResponse> {
 			if (totalPos > 0) {
 				rsp.recordsTotal = stmt.getInt(totalPos);
 			}
-			rsp.data = U.getDataFromResultSet(rs);
-			rsp.result = C.RESULT_SUCCESS;
+			rsp.data = Util.getDataFromResultSet(rs);
+			rsp.result = Contants.RESULT_SUCCESS;
 		} catch (Exception e) {
-			rsp.result = C.RESULT_FAIL;
+			rsp.result = Contants.RESULT_FAIL;
 			rsp.error = e.getMessage();
 			log.error(e.getMessage(), e);
 		} finally {

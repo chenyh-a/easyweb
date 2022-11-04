@@ -1,8 +1,13 @@
 package com.example.easyweb.vo;
 
+/**
+ * @author chenyh-a
+ * @version created 2022-10-17
+ */
 public class UploadResponse extends BaseResponse {
 
 	public String originalFilename;
 	public Long fileSize;
-	public String destFilePath;// destination file path
+	/** destination file path */
+	public String destFilePath;
 }

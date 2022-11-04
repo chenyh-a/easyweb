@@ -11,15 +11,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.easyweb.C;
+import com.example.easyweb.Contants;
 import com.example.easyweb.dao.QueryDao;
 import com.example.easyweb.vo.QueryRequest;
 import com.example.easyweb.vo.QueryResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * @author chenyh-a
+ * @version created 2022-10-17
+ */
 @RestController
 public class QueryController {
 	private static Logger log = LoggerFactory.getLogger(QueryController.class);
+	/** unique number passed from front end dataTables */
+	private static final String DRAW = "draw";
 
 	@Autowired
 	private QueryDao queryDao;
@@ -30,7 +36,7 @@ public class QueryController {
 		QueryRequest req = new QueryRequest();
 		String str = "";
 		try {
-			if (params.containsKey("draw")) {
+			if (params.containsKey(DRAW)) {
 				req.draw = Integer.valueOf(params.get("draw").toString());
 				req.start = Integer.valueOf(params.get("start").toString());
 				req.length = Integer.valueOf(params.get("length").toString());
@@ -54,13 +60,13 @@ public class QueryController {
 			}
 			req.method = params.get("method");
 
-			if (!C.RESULT_FAIL.equals(rsp.result)) {
+			if (!Contants.RESULT_FAIL.equals(rsp.result)) {
 				rsp = req.copy();
 				rsp = queryDao.execute(req);
 				rsp.recordsFiltered = rsp.recordsTotal;
 			}
 		} catch (Exception e) {
-			rsp.result = C.RESULT_FAIL;
+			rsp.result = Contants.RESULT_FAIL;
 			log.error(e.getMessage(), e);
 		}
 		try {
@@ -78,12 +84,12 @@ public class QueryController {
 		QueryResponse rsp = new QueryResponse();
 		String str = "";
 		try {
-			if (!C.RESULT_FAIL.equals(rsp.result)) {
+			if (!Contants.RESULT_FAIL.equals(rsp.result)) {
 				rsp = req.copy();
 				rsp = queryDao.execute(req);
 			}
 		} catch (Exception e) {
-			rsp.result = C.RESULT_FAIL;
+			rsp.result = Contants.RESULT_FAIL;
 			log.error(e.getMessage(), e);
 		}
 		try {

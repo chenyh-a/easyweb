@@ -21,6 +21,10 @@ import org.apache.poi.xssf.usermodel.XSSFRelation;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * @author chenyh-a
+ * @version created 2022-10-17
+ */
 public class WatermarkImage {
 
 	public static void write(XSSFWorkbook wb, Watermark w) throws Exception {
@@ -51,21 +55,25 @@ public class WatermarkImage {
 		g.dispose();
 
 		g = image.createGraphics();
-		g.setColor(new Color(Integer.parseInt(w.color.substring(1), 16)));// set color
+		// set color
+		g.setColor(new Color(Integer.parseInt(w.color.substring(1), 16)));
 		g.setFont(w.font);
 		g.shear(0.1, -0.26);
 
 		// set smooth effects
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		int y = w.font.getSize() * 3 - 10;// start Y point
-		g.drawString(w.text, 0, y);// draw text
+		// start Y point
+		int y = w.font.getSize() * 3 - 10;
+		// draw text
+		g.drawString(w.text, 0, y);
 		y += w.font.getSize();
 		if (w.writeDate) {
-			Font f2 = new Font(w.font.getName(), w.font.getStyle(), w.font.getSize() - 5);// date using smaller size
+			// date using smaller size
+			Font f2 = new Font(w.font.getName(), w.font.getStyle(), w.font.getSize() - 5);
 			g.setFont(f2);
 			String d = new SimpleDateFormat(w.dateFormat).format(new Date());
-			g.drawString(d, 0, y);// draw date
+			// draw date
+			g.drawString(d, 0, y);
 		}
 		g.dispose();
 		return image;

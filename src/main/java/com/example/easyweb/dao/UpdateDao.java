@@ -7,11 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.example.easyweb.C;
+import com.example.easyweb.Contants;
 import com.example.easyweb.vo.ProcedureColumn;
 import com.example.easyweb.vo.UpdateRequest;
 import com.example.easyweb.vo.UpdateResponse;
-import com.example.easyweb.vo.VO;
+import com.example.easyweb.vo.Vo;
 
 /**
  * DB utilities
@@ -37,35 +37,40 @@ public class UpdateDao extends BaseDao<UpdateRequest, UpdateResponse> {
 			return rsp;
 		}
 		CallableStatement stmt = null;
-	
+
 		try {
 			stmt = getStatement(req.method);
-			for (VO vo : req.data) {
+			for (Vo vo : req.data) {
 				for (ProcedureColumn pc : spCols) {
-					String spParamName = pc.COLUMN_NAME;// SP parameter name, should start with prefix p_
+					// SP parameter name, should start with prefix p_
+					String spParamName = pc.columnName;
 					Object val = null;
-					String dbColName = spParamName.substring(2);// remove prefix p_ as a DB column name
+					// remove prefix p_ as a DB column name
+					String dbColName = spParamName.substring(2);
 					val = vo.get(dbColName);
-					int type = pc.DATA_TYPE;
+					int type = pc.dataType;
 
-					if (spParamName.equals("p_usercode")) {
+					if ("p_usercode".equals(spParamName)) {
 						stmt.setObject(pc.pos, req.userCode);
-					} else if (pc.COLUMN_TYPE == 1 || pc.COLUMN_TYPE == 2) {// 1 In 2 InOut 3 Out 4 Return
+
+					} else if (pc.columnType == 1 || pc.columnType == 2) {
+						// 1 In 2 InOut 3 Out 4 Return
 						if (isNumeric(type) && "".equals(val)) {
 							val = 0;
 						}
 						stmt.setObject(pc.pos, val);
 					}
-					if (pc.COLUMN_TYPE == 2 || pc.COLUMN_TYPE == 3 || pc.COLUMN_TYPE == 4) {// register out parameter
-						stmt.registerOutParameter(pc.pos, pc.DATA_TYPE);
+					if (pc.columnType == 2 || pc.columnType == 3 || pc.columnType == 4) {
+						// register out parameter
+						stmt.registerOutParameter(pc.pos, pc.dataType);
 					}
 				}
 
 				try {
 					rsp.affected += stmt.executeUpdate();
-					rsp.result = C.RESULT_SUCCESS;
+					rsp.result = Contants.RESULT_SUCCESS;
 				} catch (Exception e) {
-					rsp.result = C.RESULT_FAIL;
+					rsp.result = Contants.RESULT_FAIL;
 					rsp.message = e.getMessage();
 					log.error("Error occured. request row data: " + vo, e);
 					close(stmt);

@@ -9,12 +9,17 @@ import java.util.List;
  *
  */
 public class QueryResponse extends BaseResponse {
-
-	public Integer draw;// unique post id, JQuery dataTables passed
-	public Integer start; // skipped record number, JQuery dataTables passed
-	public Integer length; // fetch record number, JQuery dataTables passed
-	public Integer recordsTotal; // return to JQuery dataTables
-	public Integer recordsFiltered;// return to JQuery dataTables
+	/** unique post id, JQuery dataTables passed */
+	public Integer draw;
+	/** skipped record number, JQuery dataTables passed */
+	public Integer start;
+	/** fetch record number, JQuery dataTables passed */
+	public Integer length;
+	/** return to JQuery dataTables */
+	public Integer recordsTotal;
+	/** return to JQuery dataTables */
+	public Integer recordsFiltered;
 	public String error;
-	public List<VO> data;// return actual query data
+	/** return actual query data */
+	public List<Vo> data;
 }

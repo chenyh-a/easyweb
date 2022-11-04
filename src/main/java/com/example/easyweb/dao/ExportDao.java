@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.example.easyweb.C;
+import com.example.easyweb.Contants;
 import com.example.easyweb.ExcelUtil;
 import com.example.easyweb.vo.ExportRequest;
 import com.example.easyweb.vo.ExportResponse;
@@ -34,13 +34,14 @@ public class ExportDao extends BaseDao<ExportRequest, ExportResponse> {
 		try {
 			stmt = getStatement(req.method);
 			for (ProcedureColumn pc : spCols) {
-				String spParamName = pc.COLUMN_NAME;// SP parameter name with prefix p_
-
-				String dbColName = spParamName.substring(2);// remove prefix p_ as DB column name
+				// SP parameter name with prefix p_
+				String spParamName = pc.columnName;
+				// remove prefix p_ as DB column name
+				String dbColName = spParamName.substring(2);
 
 				Object val = req.data.get(dbColName);
-
-				if (pc.COLUMN_TYPE == 1 || pc.COLUMN_TYPE == 2) {// 1 In 2 InOut 3 Out 4 Return
+				// 1 In 2 InOut 3 Out 4 Return
+				if (pc.columnType == 1 || pc.columnType == 2) {
 					stmt.setObject(pc.pos, val);
 				}
 			}
@@ -48,7 +49,7 @@ public class ExportDao extends BaseDao<ExportRequest, ExportResponse> {
 			ExcelUtil.export(rs, req, rsp);
 
 		} catch (Exception e) {
-			rsp.result = C.RESULT_FAIL;
+			rsp.result = Contants.RESULT_FAIL;
 			rsp.message = e.getMessage();
 			log.error(e.getMessage(), e);
 		} finally {

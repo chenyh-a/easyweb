@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.easyweb.C;
-import com.example.easyweb.U;
+import com.example.easyweb.Contants;
+import com.example.easyweb.Util;
 import com.example.easyweb.vo.UploadResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * @author chenyh-a
+ * @version created 2022-10-17
+ */
 @RestController
 public class UploadController {
 	private static Logger log = LoggerFactory.getLogger(UploadController.class);
@@ -27,16 +31,16 @@ public class UploadController {
 	public String uploadPost(@RequestParam("fileupload") MultipartFile f1, HttpServletRequest request) throws IOException {
 		long t0 = System.currentTimeMillis();
 		UploadResponse rsp = new UploadResponse();
-		String s_today = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		String stoday = new SimpleDateFormat("yyyyMMdd").format(new Date());
 		String currDir = request.getServletContext().getRealPath("/");
-		String destFilePath = currDir + "upload/" + s_today + "/" + U.getTempFileName(f1.getOriginalFilename());
+		String destFilePath = currDir + "upload/" + stoday + "/" + Util.getTempFileName(f1.getOriginalFilename());
 		log.debug("upload original file=" + f1.getOriginalFilename());
 		log.debug("upload destFilePath=" + destFilePath);
 		File f = new File(destFilePath);
 		f.getParentFile().mkdirs();
 		f1.transferTo(f);
 		long t1 = System.currentTimeMillis();
-		rsp.result = C.RESULT_SUCCESS;
+		rsp.result = Contants.RESULT_SUCCESS;
 		rsp.consumed = t1 - t0;
 		rsp.originalFilename = f1.getOriginalFilename();
 		rsp.fileSize = f1.getSize();

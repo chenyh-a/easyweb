@@ -2,7 +2,11 @@ package com.example.easyweb.vo;
 
 import java.util.LinkedHashMap;
 
-public class VOI extends LinkedHashMap<String, Integer> {
+/**
+ * @author chenyh-a
+ * @version created 2022-10-17
+ */
+public class Vs extends LinkedHashMap<String, String> {
 
 	/**
 	 * 

@@ -7,8 +7,10 @@ package com.example.easyweb.vo;
  *
  */
 public class ExportResponse extends BaseResponse {
-
-	public String fileUrl;// file URL for download, also recorded importing error info.
-	public Integer totalNum; // total number of excel rows
-	public Integer successNum;// total number of rows exported successfully
+	/** file URL for download, also recorded importing error info. */
+	public String fileUrl;
+	/** total number of excel rows */
+	public Integer totalNum;
+	/** total number of rows exported successfully */
+	public Integer successNum;
 }

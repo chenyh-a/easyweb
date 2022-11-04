@@ -20,11 +20,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.easyweb.vo.BaseResponse;
-import com.example.easyweb.vo.VO;
+import com.example.easyweb.vo.Vo;
 
-public class U {
+/**
+ * @author chenyh-a
+ * @version created 2022-10-17
+ */
+public class Util {
+	private static final int DELAY = 7200 * 1000;
+	private static final int MAX_ONCESTR_LEN = 10000;
 	private static List<String> noncestrs = new ArrayList<>();
-	private static Logger log = LoggerFactory.getLogger(U.class);
+	private static Logger log = LoggerFactory.getLogger(Util.class);
 
 	/**
 	 * Real all InputStream content as a string
@@ -53,13 +59,13 @@ public class U {
 	 * @return List filled with one or many DB rows as Map
 	 * @throws Exception
 	 */
-	public static List<VO> getDataFromResultSet(ResultSet rs) throws Exception {
-		List<VO> list = new ArrayList<>();
+	public static List<Vo> getDataFromResultSet(ResultSet rs) throws Exception {
+		List<Vo> list = new ArrayList<>();
 		if (rs != null) {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			while (rs.next()) {
 				int n = rsmd.getColumnCount();
-				VO obj = new VO();
+				Vo obj = new Vo();
 				for (int i = 1; i < n + 1; i++) {
 					String colLabel = rsmd.getColumnLabel(i);
 					int type = rsmd.getColumnType(i);
@@ -67,7 +73,8 @@ public class U {
 					if (val == null) {
 						val = "";
 					} else if (type == Types.TIMESTAMP) {
-						val = val.toString().substring(0, 19);// mysql datetime has tail .0
+						/* mysql datetime has tail .0 */
+						val = val.toString().substring(0, 19);
 					}
 					obj.put(colLabel.toLowerCase(), val.toString());
 				}
@@ -78,19 +85,19 @@ public class U {
 	}
 
 	public static void checkRequestHeader(HttpServletRequest request, BaseResponse rsp) {
-		String appkey = request.getHeader(C.APP_KEY);
-		String timestamp = request.getHeader(C.TIMESTAMP);
-		String noncestr = request.getHeader(C.NONCE_STR);
-		String reqstr = request.getHeader(C.REQ_STR);
+		String appkey = request.getHeader(Contants.APP_KEY);
+		String timestamp = request.getHeader(Contants.TIMESTAMP);
+		String noncestr = request.getHeader(Contants.NONCE_STR);
+		String reqstr = request.getHeader(Contants.REQ_STR);
 
-		String signtype = request.getHeader(C.SIGN_TYPE);
-		String signature = request.getHeader(C.SIGNATURE);
+		String signtype = request.getHeader(Contants.SIGN_TYPE);
+		String signature = request.getHeader(Contants.SIGNATURE);
 
 		Map<String, Object> params = new TreeMap<>();
-		params.put(C.APP_KEY, appkey);
-		params.put(C.TIMESTAMP, timestamp);
-		params.put(C.NONCE_STR, noncestr);
-		params.put(C.REQ_STR, reqstr);
+		params.put(Contants.APP_KEY, appkey);
+		params.put(Contants.TIMESTAMP, timestamp);
+		params.put(Contants.NONCE_STR, noncestr);
+		params.put(Contants.REQ_STR, reqstr);
 
 		long t0 = System.currentTimeMillis();
 		long t1 = 0;
@@ -103,24 +110,25 @@ public class U {
 		String serverSignature = getSignature(params, signtype);
 		if ("".equals(reqstr)) {
 			rsp.message = "Request data empty.";
-		} else if (t1 == 0 || t1 - t0 > 7200 * 1000) {
+		} else if (t1 == 0 || t1 - t0 > DELAY) {
 			rsp.message = "Time verification failed.";
 		} else if (noncestrs.contains(noncestr)) {
 			rsp.message = "Duplicate nonce string.";
-		} else if (!signature.equals(serverSignature)) {// invalid signature
+			// invalid signature
+		} else if (!signature.equals(serverSignature)) {
 			rsp.message = "Invalid signature, illegal access!";
 		} else {
 			synchronized (noncestrs) {
 				noncestrs.add(noncestr);
-				if (noncestrs.size() > 10000) {
+				if (noncestrs.size() > MAX_ONCESTR_LEN) {
 					noncestrs.remove(0);
 				}
 			}
 		}
 		if (rsp.message != null) {
-			rsp.result = C.RESULT_FAIL;
+			rsp.result = Contants.RESULT_FAIL;
 		} else {
-			rsp.result = C.RESULT_SUCCESS;
+			rsp.result = Contants.RESULT_SUCCESS;
 		}
 
 	}
@@ -163,7 +171,8 @@ public class U {
 
 	public static String getTempFileName(String baseName) {
 		Random random = new Random();
-		int rannum = (int) (random.nextDouble() * (99999999 - 10000000 + 1)) + 10000000;// 生成一个8位
+		// 生成一个8位
+		int rannum = (int) (random.nextDouble() * (99999999 - 10000000 + 1)) + 10000000;
 		int i = baseName.lastIndexOf('.');
 		String ext = "";
 		String fname = baseName;
