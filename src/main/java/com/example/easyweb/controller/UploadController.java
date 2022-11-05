@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.easyweb.Contants;
+import com.example.easyweb.Constants;
 import com.example.easyweb.Util;
 import com.example.easyweb.vo.UploadResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,7 +40,7 @@ public class UploadController {
 		f.getParentFile().mkdirs();
 		f1.transferTo(f);
 		long t1 = System.currentTimeMillis();
-		rsp.result = Contants.RESULT_SUCCESS;
+		rsp.result = Constants.RESULT_SUCCESS;
 		rsp.consumed = t1 - t0;
 		rsp.originalFilename = f1.getOriginalFilename();
 		rsp.fileSize = f1.getSize();

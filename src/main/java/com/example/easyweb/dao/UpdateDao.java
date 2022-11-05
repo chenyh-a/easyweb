@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.example.easyweb.Contants;
+import com.example.easyweb.Constants;
 import com.example.easyweb.vo.ProcedureColumn;
 import com.example.easyweb.vo.UpdateRequest;
 import com.example.easyweb.vo.UpdateResponse;
@@ -68,9 +68,9 @@ public class UpdateDao extends BaseDao<UpdateRequest, UpdateResponse> {
 
 				try {
 					rsp.affected += stmt.executeUpdate();
-					rsp.result = Contants.RESULT_SUCCESS;
+					rsp.result = Constants.RESULT_SUCCESS;
 				} catch (Exception e) {
-					rsp.result = Contants.RESULT_FAIL;
+					rsp.result = Constants.RESULT_FAIL;
 					rsp.message = e.getMessage();
 					log.error("Error occured. request row data: " + vo, e);
 					close(stmt);

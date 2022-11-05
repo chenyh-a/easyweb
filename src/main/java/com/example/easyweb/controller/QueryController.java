@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.easyweb.Contants;
+import com.example.easyweb.Constants;
 import com.example.easyweb.dao.QueryDao;
 import com.example.easyweb.vo.QueryRequest;
 import com.example.easyweb.vo.QueryResponse;
@@ -60,13 +60,13 @@ public class QueryController {
 			}
 			req.method = params.get("method");
 
-			if (!Contants.RESULT_FAIL.equals(rsp.result)) {
+			if (!Constants.RESULT_FAIL.equals(rsp.result)) {
 				rsp = req.copy();
 				rsp = queryDao.execute(req);
 				rsp.recordsFiltered = rsp.recordsTotal;
 			}
 		} catch (Exception e) {
-			rsp.result = Contants.RESULT_FAIL;
+			rsp.result = Constants.RESULT_FAIL;
 			log.error(e.getMessage(), e);
 		}
 		try {
@@ -84,12 +84,12 @@ public class QueryController {
 		QueryResponse rsp = new QueryResponse();
 		String str = "";
 		try {
-			if (!Contants.RESULT_FAIL.equals(rsp.result)) {
+			if (!Constants.RESULT_FAIL.equals(rsp.result)) {
 				rsp = req.copy();
 				rsp = queryDao.execute(req);
 			}
 		} catch (Exception e) {
-			rsp.result = Contants.RESULT_FAIL;
+			rsp.result = Constants.RESULT_FAIL;
 			log.error(e.getMessage(), e);
 		}
 		try {

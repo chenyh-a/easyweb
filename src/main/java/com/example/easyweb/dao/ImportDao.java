@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.example.easyweb.Contants;
+import com.example.easyweb.Constants;
 import com.example.easyweb.Util;
 import com.example.easyweb.vo.ImportRequest;
 import com.example.easyweb.vo.ImportResponse;
@@ -122,7 +122,7 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 			stmt.getConnection().setAutoCommit(true);
 			executeImportVerify(req, rsp);
 		} catch (Exception e) {
-			rsp.result = Contants.RESULT_FAIL;
+			rsp.result = Constants.RESULT_FAIL;
 			rsp.message = e.getMessage();
 			log.error(e.getMessage(), e);
 		}
@@ -206,9 +206,9 @@ public class ImportDao extends BaseDao<ImportRequest, ImportResponse> {
 			}
 			fis.close();
 			wb.close();
-			rsp.result = Contants.RESULT_SUCCESS;
+			rsp.result = Constants.RESULT_SUCCESS;
 		} catch (Exception e) {
-			rsp.result = Contants.RESULT_FAIL;
+			rsp.result = Constants.RESULT_FAIL;
 			rsp.message = e.getMessage();
 			log.error(e.getMessage(), e);
 			throw e;

@@ -85,19 +85,19 @@ public class Util {
 	}
 
 	public static void checkRequestHeader(HttpServletRequest request, BaseResponse rsp) {
-		String appkey = request.getHeader(Contants.APP_KEY);
-		String timestamp = request.getHeader(Contants.TIMESTAMP);
-		String noncestr = request.getHeader(Contants.NONCE_STR);
-		String reqstr = request.getHeader(Contants.REQ_STR);
+		String appkey = request.getHeader(Constants.APP_KEY);
+		String timestamp = request.getHeader(Constants.TIMESTAMP);
+		String noncestr = request.getHeader(Constants.NONCE_STR);
+		String reqstr = request.getHeader(Constants.REQ_STR);
 
-		String signtype = request.getHeader(Contants.SIGN_TYPE);
-		String signature = request.getHeader(Contants.SIGNATURE);
+		String signtype = request.getHeader(Constants.SIGN_TYPE);
+		String signature = request.getHeader(Constants.SIGNATURE);
 
 		Map<String, Object> params = new TreeMap<>();
-		params.put(Contants.APP_KEY, appkey);
-		params.put(Contants.TIMESTAMP, timestamp);
-		params.put(Contants.NONCE_STR, noncestr);
-		params.put(Contants.REQ_STR, reqstr);
+		params.put(Constants.APP_KEY, appkey);
+		params.put(Constants.TIMESTAMP, timestamp);
+		params.put(Constants.NONCE_STR, noncestr);
+		params.put(Constants.REQ_STR, reqstr);
 
 		long t0 = System.currentTimeMillis();
 		long t1 = 0;
@@ -126,9 +126,9 @@ public class Util {
 			}
 		}
 		if (rsp.message != null) {
-			rsp.result = Contants.RESULT_FAIL;
+			rsp.result = Constants.RESULT_FAIL;
 		} else {
-			rsp.result = Contants.RESULT_SUCCESS;
+			rsp.result = Constants.RESULT_SUCCESS;
 		}
 
 	}

@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.example.easyweb.Contants;
+import com.example.easyweb.Constants;
 import com.example.easyweb.Util;
 import com.example.easyweb.vo.ProcedureColumn;
 import com.example.easyweb.vo.QueryRequest;
@@ -88,9 +88,9 @@ public class QueryDao extends BaseDao<QueryRequest, QueryResponse> {
 				rsp.recordsTotal = stmt.getInt(totalPos);
 			}
 			rsp.data = Util.getDataFromResultSet(rs);
-			rsp.result = Contants.RESULT_SUCCESS;
+			rsp.result = Constants.RESULT_SUCCESS;
 		} catch (Exception e) {
-			rsp.result = Contants.RESULT_FAIL;
+			rsp.result = Constants.RESULT_FAIL;
 			rsp.error = e.getMessage();
 			log.error(e.getMessage(), e);
 		} finally {

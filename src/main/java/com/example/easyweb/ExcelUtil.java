@@ -95,7 +95,7 @@ public class ExcelUtil {
 		}
 		rsp.totalNum = n;
 		rsp.successNum = n;
-		rsp.result = Contants.RESULT_SUCCESS;
+		rsp.result = Constants.RESULT_SUCCESS;
 	}
 
 	private static File getDestFile(ExportRequest req, ExportResponse rsp) {

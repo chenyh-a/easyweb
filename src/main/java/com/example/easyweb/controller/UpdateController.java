@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.easyweb.Contants;
+import com.example.easyweb.Constants;
 import com.example.easyweb.dao.UpdateDao;
 import com.example.easyweb.vo.UpdateRequest;
 import com.example.easyweb.vo.UpdateResponse;
@@ -33,12 +33,12 @@ public class UpdateController extends HttpServlet {
 		UpdateResponse rsp = new UpdateResponse();
 		String str = "";
 		try {
-			if (!Contants.RESULT_FAIL.equals(rsp.result)) {
+			if (!Constants.RESULT_FAIL.equals(rsp.result)) {
 				rsp = req.copy();
 				rsp = updateDao.execute(req);
 			}
 		} catch (Exception e) {
-			rsp.result = Contants.RESULT_FAIL;
+			rsp.result = Constants.RESULT_FAIL;
 			log.error(e.getMessage(), e);
 		}
 		try {

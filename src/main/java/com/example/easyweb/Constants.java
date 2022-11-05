@@ -6,7 +6,7 @@ package com.example.easyweb;
  * @author chenyh
  *
  */
-public class Contants {
+public class Constants {
 	public static final String APP_KEY = "appkey";
 	public static final String TIMESTAMP = "timestamp";
 	public static final String NONCE_STR = "noncestr";
