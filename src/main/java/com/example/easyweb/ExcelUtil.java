@@ -40,18 +40,11 @@ public class ExcelUtil {
 			XSSFWorkbook wb = new XSSFWorkbook();
 			XSSFSheet sheet1 = wb.createSheet("My Sheet 1");
 			XSSFRow row0 = sheet1.createRow(n);
-
-			XSSFFont font0 = createFont(wb, "Arial", 11);
-
-			XSSFCellStyle style0 = wb.createCellStyle();
-			style0.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-			style0.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-			style0.setFont(font0);
-
-			XSSFFont font1 = createFont(wb, "Arial", 10);
-
-			XSSFCellStyle style1 = wb.createCellStyle();
-			style1.setFont(font1);
+			
+			// create header style
+			XSSFCellStyle style0 = createStyle(wb, "Arial", 11, IndexedColors.GREY_25_PERCENT.getIndex());
+			// create content style
+			XSSFCellStyle style1 = createStyle(wb, "Arial", 10, (short) -1);
 
 			int i = 0;
 			for (String key : req.cols.keySet()) {
@@ -120,11 +113,17 @@ public class ExcelUtil {
 		return file;
 	}
 
-	private static XSSFFont createFont(XSSFWorkbook wb, String fontName, int fontSize) {
+	private static XSSFCellStyle createStyle(XSSFWorkbook wb, String fontName, int fontSize, short backColor) {
 		XSSFFont font = wb.createFont();
 		font.setFontName(fontName);
 		font.setFontHeightInPoints((short) fontSize);
-		return font;
+		XSSFCellStyle style0 = wb.createCellStyle();
+		if (backColor > 0) {
+			style0.setFillForegroundColor(backColor);
+			style0.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		}
+		style0.setFont(font);
+		return style0;
 	}
 
 	private static void drawWatermark(XSSFWorkbook wb, String watermarkText) throws Exception {
