@@ -1,22 +1,30 @@
 package com.example.easyweb.vo;
 
 /**
- * User request parameters passed from front end.
+ * A common exporting VO that contains user request parameters passed from front end.
  * 
- * @author chenyh
+ * @author chenyh-a
  *
  */
 public class ExportRequest extends BaseRequest {
 	/** export file name without suffix */
 	public String filename;
-	/** current absolute directory easyweb/ */
+
+	/**
+	 * current absolute directory of the web context(e.g. easyweb/) this parameter
+	 * is not passed from front-end, it will be filled in controller
+	 */
 	public String currRootDir;
-	/** need auto sizing excel column width */
+
+	/** need auto sizing column width in result excel file */
 	public Boolean autoSizeColumn;
+
 	/** print user code as water mark */
 	public Boolean watermark;
-	/** table column name and caption, required when import/export. */
+
+	/** table column name and caption, */
 	public Vs cols;
+
 	/** extra info, usually searching criteria */
 	public Vo data = new Vo();
 

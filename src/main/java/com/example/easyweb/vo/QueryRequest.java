@@ -1,18 +1,18 @@
 package com.example.easyweb.vo;
 
 /**
- * User request parameters passed from front end. params passed from front end
- * will use a JQuery dataTables JS component
+ * A common VO that contains user request parameters passed from front end.
+ * it will accept searching criteria from JQuery dataTables JS component
  * 
  * @author chenyh
  *
  */
 public class QueryRequest extends BaseRequest {
-	/** required when query, get it from request */
+	/** required, query unique id */
 	public Integer draw = 1;
-	/** default 0, required when query */
+	/** result record offset, default 0, from the first record*/
 	public Integer start;
-	/** page size, required when query */
+	/** page size */
 	public Integer length = 10;
 	/** order DB column */
 	public String orderColumn;

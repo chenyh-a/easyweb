@@ -7,7 +7,9 @@ package com.example.easyweb.vo;
 public class UploadResponse extends BaseResponse {
 
 	public String originalFilename;
+	
 	public Long fileSize;
+	
 	/** destination file path */
 	public String destFilePath;
 }

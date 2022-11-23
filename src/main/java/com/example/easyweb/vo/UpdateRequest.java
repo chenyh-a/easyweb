@@ -3,7 +3,7 @@ package com.example.easyweb.vo;
 import java.util.List;
 
 /**
- * User request parameters passed from front end.
+ * A common VO that contains user request parameters passed from front end.
  * 
  * @author chenyh
  *
@@ -11,8 +11,8 @@ import java.util.List;
 public class UpdateRequest extends BaseRequest {
 
 	/**
-	 * parameter passed from UI page, if it is a query,pass only one set parameter
-	 * as query condition, if update, user can pass more than one set of data.
+	 * parameter passed from UI page, if it is a query, user can pass more than one set of data records.
+	 * Vo is a map contains all required data for manipulating later
 	 */
 	public List<Vo> data;
 

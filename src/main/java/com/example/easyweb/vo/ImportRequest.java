@@ -1,18 +1,25 @@
 package com.example.easyweb.vo;
 
 /**
- * User request parameters passed from front end.
+ * A common importing VO that contains user request parameters passed from front
+ * end.
  * 
  * @author chenyh
  *
  */
 public class ImportRequest extends BaseRequest {
-	/** required when import */
+	/** unique id for importing this time */
 	public String token;
-	/** full path of actual uploaded file */
+
+	/**
+	 * full path of actual uploaded file this parameter is not passed from
+	 * front-end, it will be filled in controller
+	 */
 	public String fullPath;
+
 	/** verify SP name */
 	public String verifyMethod;
+
 	/** table column name and caption, required when import/export. */
 	public Vs cols;
 

@@ -38,10 +38,13 @@ public class ProcedureColumn {
 	 */
 
 	public String remarks;
-	/** SP parameter position*/
+	
+	/** SP parameter position, system will scan mapping data to fill it*/
 	public Integer pos = 0;
-	/** mapping excel header name, use it when import*/
+	
+	/** mapping excel header name, use it when importing*/
 	public String excelHeader;
-	/** mapping excel header index, use it when import*/
+	
+	/** mapping excel header index, use it when importing*/
 	public Integer excelIndex = 0;
 }

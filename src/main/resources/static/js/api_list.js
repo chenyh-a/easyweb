@@ -1,5 +1,6 @@
 
 var apiName = "";
+var oid = 0;
 
 function queryApiList() {
    refreshList("#apiList", "");
@@ -15,9 +16,10 @@ function proccessResult(obj) {
 function listApi() {
    var opt = new TOption();
    opt.pageLength = 10;
- 
+
    var columns = [
       { data: 'db' },
+     // { data: 'oid' },
       { data: 'name' },
       { data: 'comment' },
       { data: 'created' },
@@ -36,7 +38,7 @@ $(document).ready(function() {
    var table = $('#apiList').DataTable();
    $('#apiList tbody').on('click', 'tr', function() {
       apiName = table.row(this).data().name;
-
+      oid = table.row(this).data().oid;
       listParams();
    });
 
@@ -46,7 +48,7 @@ function listParams() {
    var table = $('#paramList').dataTable();
    table.fnClearTable();
    table.fnDestroy();
-   
+
    var opt = new TOption();
    opt.searching = false;
    opt.paging = false;
@@ -63,7 +65,7 @@ function listParams() {
    var queryData = {
       tag: "PARAMS_LIST",
       method: "sp_get_api_params",
-      data: { db: "test", name: apiName }
+      data: { db: "test", name: apiName, oid: oid }
    };
 
    showList("#paramList", "queryget", opt, columns, columnsDefs, queryData);

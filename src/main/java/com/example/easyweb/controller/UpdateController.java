@@ -16,8 +16,9 @@ import com.example.easyweb.vo.UpdateResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * 
- * @author Administrator
+ * A common routine controller that can process create/update/delete, etc
+ * you can implement specific business operation in you database SP
+ * @author chenyh-a
  *
  */
 @RestController
@@ -28,6 +29,9 @@ public class UpdateController extends HttpServlet {
 	@Autowired
 	private UpdateDao updateDao;
 
+	/**
+	 * @param req collected data passed from front-end
+	 */
 	@PostMapping(value = "/updateserver")
 	public String updatePost(@RequestBody UpdateRequest req) {
 		UpdateResponse rsp = new UpdateResponse();
