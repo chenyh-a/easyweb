@@ -16,7 +16,7 @@ public class OrderConsumer {
 
 	@KafkaListener(topics = { "TOPIC_ORDER" }, groupId = "GROUP_LOGISTICS")
 	public void consume(String message) {
-		log.info("receive msg: " + message);
+		// put actual consumer code here.
+		log.info("Consumer receive: " + message);
 	}
-
 }
