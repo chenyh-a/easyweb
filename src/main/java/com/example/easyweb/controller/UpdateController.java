@@ -27,6 +27,8 @@ public class UpdateController {
 	private UpdateDao updateDao;
 
 	/**
+	 * create/update/delete record
+	 * 
 	 * @param req collected data passed from front-end
 	 */
 	@PostMapping(value = "/updateserver")

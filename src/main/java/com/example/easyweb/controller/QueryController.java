@@ -30,6 +30,9 @@ public class QueryController {
 	@Autowired
 	private QueryDao queryDao;
 
+	/**
+	 * get list
+	 * */
 	@GetMapping(value = "/queryget")
 	public String queryGet(@RequestParam Map<String, String> params) {
 		QueryResponse rsp = new QueryResponse();
@@ -79,6 +82,9 @@ public class QueryController {
 		return str;
 	}
 
+	/**
+	 * get one record
+	 * */
 	@PostMapping(value = "/querypost")
 	public String queryPost(@RequestBody QueryRequest req) {
 		QueryResponse rsp = new QueryResponse();
