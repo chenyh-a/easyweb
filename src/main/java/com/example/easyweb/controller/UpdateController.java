@@ -1,7 +1,5 @@
 package com.example.easyweb.controller;
 
-import javax.servlet.http.HttpServlet;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RestController
-public class UpdateController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class UpdateController {
 	private static Logger log = LoggerFactory.getLogger(UpdateController.class);
 
 	@Autowired
