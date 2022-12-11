@@ -28,11 +28,13 @@ public class UploadController {
 	private static Logger log = LoggerFactory.getLogger(UploadController.class);
 
 	@RequestMapping(value = "/uploadserver")
-	public String uploadPost(@RequestParam("fileupload") MultipartFile f1, HttpServletRequest request) throws IOException {
+	public String uploadPost(@RequestParam("fileupload") MultipartFile f1, HttpServletRequest request)
+			throws IOException {
 		long t0 = System.currentTimeMillis();
 		UploadResponse rsp = new UploadResponse();
 		String stoday = new SimpleDateFormat("yyyyMMdd").format(new Date());
-		String currDir = request.getServletContext().getRealPath("/");
+		String currDir = request.getServletContext().getRealPath("/").replace("\\", "/");
+
 		String destFilePath = currDir + "upload/" + stoday + "/" + Util.getTempFileName(f1.getOriginalFilename());
 		log.debug("upload original file=" + f1.getOriginalFilename());
 		log.debug("upload destFilePath=" + destFilePath);
