@@ -1,9 +1,10 @@
 package com.example.easyweb.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A common VO that contains user request parameters passed from front end.
+ * User request parameters passed from front end.
  * 
  * @author chenyh
  *
@@ -11,12 +12,11 @@ import java.util.List;
 public class UpdateRequest extends BaseRequest {
 
 	/**
-	 * parameter passed from UI page, if it is a query, user can pass more than one set of data records.
-	 * Vo is a map contains all required data for manipulating later
+	 * parameter passed from UI page, if it is a query,pass only one set parameter
+	 * as query condition, if update, user can pass more than one set of data.
 	 */
-	public List<Vo> data;
+	public List<Vo> data= new ArrayList<>();
 
-	@Override
 	public UpdateResponse copy() {
 		UpdateResponse rsp = new UpdateResponse();
 		super.baseCopy(rsp);

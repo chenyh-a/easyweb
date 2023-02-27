@@ -78,7 +78,7 @@ function deleteCustomer() {
    }
 
    confirm1('Delete data', 'Delete selected records. Are you sure?', function() {
-      callajax("updateserver", obj);
+      callajax("delete", obj);
 
    });
 }
@@ -134,7 +134,7 @@ function proccessResult(obj) {
       obj.method = "sp_get_customer_by_id";
       obj.tag = "QUERY_ONE";
       obj.data = { customerid: custid };
-      callajax("querypost", obj);//get one record after get select values
+      callajax("getone", obj);//get one record after get select values
 
    }
 }
@@ -188,7 +188,7 @@ function listCustomer() {
       method: "sp_get_customer_list",
    };
 
-   showList("#myTable", "queryget", opt, columns, columnsDefs, queryData);
+   showList("#myTable", "getlist", opt, columns, columnsDefs, queryData);
 }
 
 function exportCustomer() {
@@ -251,7 +251,7 @@ function queryOneCustomer() {
    obj.method = "sp_get_employee_sel";// get select data firstly
    obj.tag = "QUERY_ONE";
    obj.data = {};
-   callajax("querypost", obj);
+   callajax("getone", obj);
 }
 
 function openEditCustomer(data) {
@@ -305,6 +305,6 @@ function saveCustomer() {
    obj.data = [rec];
    //confirm1('Save data', 'Save current record. Are you sure?', function() {
    $("#myEditDialog").modal("hide");
-   callajax("updateserver", obj);
+   callajax("update", obj);
    //});
 }
