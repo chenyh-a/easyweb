@@ -30,7 +30,7 @@ function listApi() {
       method: "sp_get_api_list",
       data: { db: "test" }
    };
-   showList("#apiList", "queryget", opt, columns, columnsDefs, queryData);
+   showList("#apiList", "getlist", opt, columns, columnsDefs, queryData);
 }
 
 $(document).ready(function() {
@@ -68,5 +68,5 @@ function listParams() {
       data: { db: "test", name: apiName, oid: oid }
    };
 
-   showList("#paramList", "queryget", opt, columns, columnsDefs, queryData);
+   showList("#paramList", "getlist", opt, columns, columnsDefs, queryData);
 }
