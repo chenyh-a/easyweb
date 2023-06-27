@@ -28,7 +28,7 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 	
 	static final String PARAM_TOKEN = "p_token";
 
-	@Autowired
+	@Autowired(required=true)
 	DataSource dataSource;
 
 	protected List<ProcedureColumn> spCols;

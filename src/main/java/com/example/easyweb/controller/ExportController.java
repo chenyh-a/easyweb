@@ -1,6 +1,6 @@
 package com.example.easyweb.controller;
 
-import javax.servlet.ServletContext;
+//import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +14,8 @@ import com.example.easyweb.dao.ExportDao;
 import com.example.easyweb.vo.ExportRequest;
 import com.example.easyweb.vo.ExportResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.ServletContext;
 
 /**
  * 
