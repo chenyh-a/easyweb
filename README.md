@@ -3,9 +3,9 @@ A simple java framework contains data import/export routine with high performanc
 - Use Git download(clone) source code,
   - git clone https://github.com/chenyh-a/easyweb
 - Initiate example data in your database(Mysql or MariaDB)
-  - Create a DB named "test":
+  - Open mysql client command window and create a DB named "test"(script below):
     - create database test default character set utf8mb4;
-  - Import example data in Mysql Client window using command above:
+  - Import example data in Mysql Client window using script below:
     - use test
     - source /git/easyweb/data.sql (use your own path)
 - Modify DB connection parameters in config file src/main/resources/application.properties, such as DB url/username/password...
