@@ -1,23 +1,22 @@
 
-var apiName = "";
-var oid = 0;
+let apiName = "";
+let oid = 0;
 
 function queryApiList() {
    refreshList("#apiList", "");
 }
 
 function proccessResult(obj) {
-   if (obj.result == "FAIL") {
+   if (obj.result === "FAIL") {
       error1("Operation failed", "Error: " + obj.message);
-      return;
    }
 }
 
 function listApi() {
-   var opt = new TOption();
+   let opt = new TOption();
    opt.pageLength = 10;
 
-   var columns = [
+   let columns = [
       { data: 'db' },
      // { data: 'oid' },
       { data: 'name' },
@@ -25,17 +24,17 @@ function listApi() {
       { data: 'created' },
       { data: 'modified' },
    ];
-   var columnsDefs = [];
-   var queryData = {
+   let columnsDefs = [];
+   let queryData = {
       method: "sp_get_api_list",
       data: { db: "test" }
    };
-   showList("#apiList", "getlist", opt, columns, columnsDefs, queryData);
+   showList("#apiList", "getpagelist", opt, columns, columnsDefs, queryData);
 }
 
 $(document).ready(function() {
    listApi();
-   var table = $('#apiList').DataTable();
+   let table = $('#apiList').DataTable();
    $('#apiList tbody').on('click', 'tr', function() {
       apiName = table.row(this).data().name;
       oid = table.row(this).data().oid;
@@ -45,28 +44,28 @@ $(document).ready(function() {
 });
 
 function listParams() {
-   var table = $('#paramList').dataTable();
+   let table = $('#paramList').dataTable();
    table.fnClearTable();
    table.fnDestroy();
 
-   var opt = new TOption();
+   let opt = new TOption();
    opt.searching = false;
    opt.paging = false;
    opt.pageLength = 15;
    opt.info = false;
 
-   var columns = [
+   let columns = [
       { data: 'api_name' },
       { data: 'parameter_name' },
       { data: 'parameter_type' },
       { data: 'data_type' }
    ];
-   var columnsDefs = [];
-   var queryData = {
+   let columnsDefs = [];
+   let queryData = {
       tag: "PARAMS_LIST",
       method: "sp_get_api_params",
       data: { db: "test", name: apiName, oid: oid }
    };
 
-   showList("#paramList", "getlist", opt, columns, columnsDefs, queryData);
+   showList("#paramList", "getList", opt, columns, columnsDefs, queryData);
 }

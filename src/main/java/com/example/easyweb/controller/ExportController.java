@@ -2,23 +2,21 @@ package com.example.easyweb.controller;
 
 //import javax.servlet.ServletContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.easyweb.Constants;
 import com.example.easyweb.dao.ExportDao;
 import com.example.easyweb.vo.ExportRequest;
 import com.example.easyweb.vo.ExportResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import jakarta.annotation.Resource;
 import jakarta.servlet.ServletContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 
+ * mvn
  * @author chenyh-a
  *
  */
@@ -27,10 +25,10 @@ public class ExportController {
 
 	private static Logger log = LoggerFactory.getLogger(ExportController.class);
 
-	@Autowired
+	@Resource
 	private ExportDao exportDao;
 
-	@Autowired
+	@Resource
 	private ServletContext servletContext;
 
 	@PostMapping(value = "/exportserver")

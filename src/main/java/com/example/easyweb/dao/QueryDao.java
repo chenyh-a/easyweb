@@ -1,17 +1,16 @@
 package com.example.easyweb.dao;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
 import com.example.easyweb.Constants;
 import com.example.easyweb.Util;
 import com.example.easyweb.vo.ProcedureColumn;
 import com.example.easyweb.vo.QueryRequest;
 import com.example.easyweb.vo.QueryResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
 
 /**
  * DB utilities<br/>
@@ -43,9 +42,7 @@ public class QueryDao extends BaseDao<QueryRequest, QueryResponse> {
 	private static Logger log = LoggerFactory.getLogger(QueryDao.class);
 
 	@Override
-	public QueryResponse execute(QueryRequest req0) {
-
-		QueryRequest req = (QueryRequest) req0;
+	public QueryResponse execute(QueryRequest req) {
 		QueryResponse rsp = req.copy();
 		CallableStatement stmt = null;
 		ResultSet rs = null;
@@ -58,35 +55,19 @@ public class QueryDao extends BaseDao<QueryRequest, QueryResponse> {
 				Object val = null;
 				// remove prefix p_ as DB column name
 				String dbColName = spParamName.substring(2);
-				if (PARAM_GET_NUM.equals(spParamName)) {
-					val = req.length;
-				} else if (PARAM_GET_OFFSET.equals(spParamName)) {
-					val = req.start;
-				} else if (PARAM_ORDER_COLUMN.equals(spParamName)) {
+				if (PARAM_ORDER_COLUMN.equals(spParamName)) {
 					val = req.orderColumn;
 				} else if (PARAM_ORDER_DIR.equals(spParamName)) {
 					val = req.orderDir;
-				} else if (PARAM_USER_CODE.equals(spParamName)) {
-					val = req.userCode;
 				} else {
-					val = req.data.get(dbColName);
+					val = req.criteria.get(dbColName);
 				}
 				// 1 In 2 InOut 3 Out 4 Return
 				if (pc.columnType == 1 || pc.columnType == 2) {
 					stmt.setObject(pc.pos, val);
 				}
-				// register out parameter
-				if (pc.columnType == 2 || pc.columnType == 3 || pc.columnType == 4) {
-					stmt.registerOutParameter(pc.pos, pc.dataType);
-					if (PARAM_TOTAL_RECORDS.equals(spParamName)) {
-						totalPos = pc.pos;
-					}
-				}
 			}
 			rs = stmt.executeQuery();
-			if (totalPos > 0) {
-				rsp.recordsTotal = stmt.getInt(totalPos);
-			}
 			rsp.data = Util.getDataFromResultSet(rs);
 			rsp.result = Constants.RESULT_SUCCESS;
 		} catch (Exception e) {

@@ -1,20 +1,14 @@
 package com.example.easyweb.dao;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
+import com.example.easyweb.vo.ProcedureColumn;
+import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.easyweb.vo.ProcedureColumn;
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * BaseDao , initiate statement, close resource etc.
@@ -28,7 +22,7 @@ public abstract class BaseDao<T, E> implements IDao<T, E> {
 	
 	static final String PARAM_TOKEN = "p_token";
 
-	@Autowired(required=true)
+	@Resource
 	DataSource dataSource;
 
 	protected List<ProcedureColumn> spCols;

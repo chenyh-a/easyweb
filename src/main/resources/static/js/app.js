@@ -1,9 +1,9 @@
 const reg = /(\d)(?=(?:\d{3})+$)/g;
 //global variables
-var loginInfo = { userCode: "chenyh", roleCode: "ADMIN" };// test only
+let loginInfo = { userCode: "chenyh", roleCode: "ADMIN" };// test only
 
 Date.prototype.format = function(fmt) {
-   var o = {
+   let o = {
       "M+": this.getMonth() + 1,
       "d+": this.getDate(),
       "H+": this.getHours(),
@@ -15,9 +15,9 @@ Date.prototype.format = function(fmt) {
    if (/(y+)/.test(fmt)) {
       fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
    }
-   for (var k in o) {
+   for (let k in o) {
       if (new RegExp("(" + k + ")").test(fmt)) {
-         fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+         fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
       }
    }
    return fmt;
@@ -27,11 +27,11 @@ function num(n) {
    return n.toString().replace(reg, '$1,');
 }
 
-var lastTime = 0;
+let lastTime = 0;
 
 function isDblClick() {
-   var d = new Date();
-   var n = d.getTime();
+   let d = new Date();
+   let n = d.getTime();
    if (n - lastTime < 1000) {
       return true;// avoid double click
    }
@@ -41,16 +41,16 @@ function isDblClick() {
 function callajax(serverurl, obj) {
    obj.userCode = loginInfo.userCode;
    obj.roleCode = loginInfo.roleCode;
-   var token = "" + new Date().getTime();//test
-   var appkey = "app1234567890";//test
-   var noncestr = Math.random().toString(36).substring(2, 15);
-   var req = JSON.stringify(obj);
-   var timestamp = new Date().format("yyyyMMddHHmmss");
-   var string1 = "appkey" + appkey + "noncestr" + noncestr + "reqstr" + req + "timestamp" + timestamp;
-   var signtype = "SHA-1";//SHA-1 or HMAC-SHA256
+   let token = "" + new Date().getTime();//test
+   let appkey = "app1234567890";//test
+   let noncestr = Math.random().toString(36).substring(2, 15);
+   let req = JSON.stringify(obj);
+   let timestamp = new Date().format("yyyyMMddHHmmss");
+   let string1 = "appkey" + appkey + "noncestr" + noncestr + "reqstr" + req + "timestamp" + timestamp;
+   let signtype = "SHA-1";//SHA-1 or HMAC-SHA256
 
    //var signature = CryptoJS.SHA1(string1);
-   var signature = "c3a2510fe23310c35f6bc395ad8e093f232b2e9d";//for test
+   let signature = "c3a2510fe23310c35f6bc395ad8e093f232b2e9d";//for test
    //console.log("signature=" + signature);
    //console.log("string1=" + string1);
 
@@ -139,6 +139,7 @@ class TOption {
 }
 
 function showList(tableId, url, opt, columns, columnsDefs, queryData) {
+
    queryData.userCode = loginInfo.userCode;
    queryData.roleCode = loginInfo.roleCode;
    $(tableId).DataTable({
@@ -260,14 +261,14 @@ function confirm1(title1, content1, callback) {
 
 function refreshList(tableId, checkAllId) {
    $(tableId).dataTable().fnDraw(true);
-   if (checkAllId != "") {
+   if (checkAllId !== "") {
       $(checkAllId).prop("checked", false);
    }
 }
 
 $(document).ready(function() {
    $.fn.dataTable.render.ellipsis = function(cutoff, wordbreak, escapeHtml) {
-      var esc = function(t) {
+      let esc = function(t) {
          return t
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -289,7 +290,7 @@ $(document).ready(function() {
          if (d.length < cutoff) {
             return d;
          }
-         var shortened = d.substr(0, cutoff - 1);
+         let shortened = d.substr(0, cutoff - 1);
          // Find the last white space character in the string
          if (wordbreak) {
             shortened = shortened.replace(/\s([^\s]*)$/, '');
