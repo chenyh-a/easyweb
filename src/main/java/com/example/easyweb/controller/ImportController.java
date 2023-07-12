@@ -1,28 +1,24 @@
 package com.example.easyweb.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-//import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.example.easyweb.Util;
 import com.example.easyweb.dao.ImportDao;
 import com.example.easyweb.vo.ImportRequest;
 import com.example.easyweb.vo.ImportResponse;
 import com.example.easyweb.vo.Vs;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author chenyh-a
@@ -32,7 +28,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ImportController {
 	private static Logger log = LoggerFactory.getLogger(ImportController.class);
 
-	@Autowired
+	@Resource
 	private ImportDao importDao;
 
 	@RequestMapping(value = "/importserver")
