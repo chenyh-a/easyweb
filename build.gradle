@@ -35,7 +35,7 @@ dependencies {
 group = 'llph'
 version = '0.0.1'
 description = 'webtest'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 publishing {
     publications {
